@@ -1,0 +1,132 @@
+create database school_library;
+
+use school_library;
+
+create table uyeler
+(
+uyeno int not null identity(1,1) Primary Key,
+uyeadi varchar(30),
+uyesoyadi varchar(40),
+cinsiyet nvarchar(5),
+telefon int,
+eposta nvarchar(30)
+
+);
+
+
+ALTER TABLE uyeler
+    ADD adresno INT
+    CONSTRAINT FK_uyeler_adresno 
+        FOREIGN KEY (adresno) 
+        REFERENCES adresler(adresno);
+
+
+create table adresler(
+adresno int not null identity(1,1) primary key,
+sehir nvarchar(30),
+mahalle nvarchar(50),
+binano int,
+cadde nvarchar(60),
+ulke nvarchar(70),
+postakodu int
+);
+
+create table kutuphane(
+kutuphaneno int not null identity(1,1) primary key,
+kutuphaneismi nvarchar(30),
+aciklama nvarchar(50)
+
+
+--adresno fk yapılacak
+
+);
+
+
+ALTER TABLE kutuphane
+    ADD adresno INT
+    CONSTRAINT FK_kutuphane_adresno 
+        FOREIGN KEY (adresno) 
+        REFERENCES adresler(adresno);
+
+create table kitaplar(
+ISBN int not null identity(1,1) primary key,
+kitapadi nvarchar(20),
+sayfasayisi int,
+yayintarihi datetime
+
+
+
+
+
+--yazarno fk yapılacak
+--kategorino fk yapılacak
+
+);
+
+
+ALTER TABLE kitaplar
+    ADD yazarno INT
+    CONSTRAINT FK_kitaplar_yazarno 
+        FOREIGN KEY (yazarno) 
+        REFERENCES yazarlar(yazarno);
+
+ALTER TABLE kitaplar
+    ADD kategorino INT
+    CONSTRAINT FK_kitaplar_kategorino
+        FOREIGN KEY (kategorino) 
+        REFERENCES kategoriler(kategorino)
+
+
+create table kategoriler(
+kategorino int not null identity(1,1) primary key,
+kategoriadi nvarchar(30)
+);
+ create table yazarlar(
+ yazarno int not null identity(1,1) primary key,
+ yazaradi nvarchar(20),
+ yazarsoyadi nvarchar(15)
+
+ );
+
+ create table emanet(
+ emanetno int not null identity(1,1) primary key,
+ emanettarihi datetime,
+ teslimtarihi datetime,
+ uyeno int
+
+ --uyeno fk eklenecek
+ --kutuphaneno fk eklenecek
+ --ISBN fk eklenecek
+ 
+);
+
+
+ALTER TABLE emanet
+    ADD uyeno INT
+    CONSTRAINT FK_emanet_uyeno 
+        FOREIGN KEY (uyeno)  
+        REFERENCES uyeler(uyeno);             
+
+
+ALTER TABLE emanet
+    ADD kutuphaneno INT
+    CONSTRAINT FK_emanet_kutuphaneno
+        FOREIGN KEY (kutuphaneno) 
+        REFERENCES kutuphane(kutuphaneno);
+
+
+ALTER TABLE emanet
+ADD ISBN INT 
+CONSTRAINT FK_emanet_ISBN
+FOREIGN KEY (ISBN)
+REFERENCES kitaplar(ISBN);
+
+
+ 
+ select*from adresler;
+ select*from emanet;
+ select*from kategoriler;
+ select*from kitaplar;
+ select*from kutuphane;
+ select*from uyeler;
+ select*from yazarlar;
